@@ -6,17 +6,17 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Moja Mini App",
+    "name": "Get-mini-app",
     "homeUrl": "https://your-domain.com",
     "iconUrl": "https://your-domain.com/icon.png",
     "splashImageUrl": "https://your-domain.com/splash.png",
     "splashBackgroundColor": "#667eea",
-    "subtitle": "Moja prvĂˇ mini aplikĂˇcia",
-    "description": "JednoduchĂˇ mini app na Base",
+    "subtitle": "Moja prvá mini aplikácia",
+    "description": "Jednoduchá mini app na Base",
     "primaryCategory": "games",
     "tags": ["example", "miniapp"],
     "ogTitle": "Moja Mini App",
-    "ogDescription": "SkĂşĹˇaj moju mini aplikĂˇciu",
+    "ogDescription": "Skúšaj moju mini aplikáciu",
     "noindex": true
   }
 }

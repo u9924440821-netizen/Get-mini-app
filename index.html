@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moja Mini App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>đźŽ® Moja Mini App</h1>
+        <p>Vitaj v mojej prvej mini aplikĂˇcii na Base!</p>
+        <button onclick="handleClick()">Klikni na mĹa!</button>
+        <div class="status" id="status">PoÄŤkaj, aplikĂˇcia sa naÄŤĂ­tava...</div>
+    </div>
+
+    <script type="module">
+        import { sdk } from '@farcaster/miniapp-sdk';
+
+        // KeÄŹ sa aplikĂˇcia naÄŤĂ­ta
+        window.addEventListener('load', async () => {
+            try {
+                await sdk.actions.ready();
+                document.getElementById('status').textContent = 'âś… AplikĂˇcia je pripravenĂˇ!';
+                console.log('Mini app je ĐłĐľŃ‚ĐľĐ˛!');
+            } catch (error) {
+                document.getElementById('status').textContent = 'âťŚ Chyba: ' + error.message;
+                console.error('Chyba:', error);
+            }
+        });
+
+        window.handleClick = function() {
+            const status = document.getElementById('status');
+            status.textContent = 'đźŽ‰ KlikĂˇ! AplikĂˇcia funguje!';
+        };
+    </script>
+</body>
+</html>

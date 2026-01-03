@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulačka Mini App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .calculator {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .display {
+            background: #333;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: right;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            word-wrap: break-word;
+            word-break: break-all;
+            min-height: 50px;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .number {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .number:hover {
+            background: #d0d0d0;
+            transform: scale(1.05);
+        }
+        
+        .operator {
+            background: #667eea;
+            color: white;
+        }
+        
+        .operator:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+        
+        .equals {
+            background: #4CAF50;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .equals:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        .clear {
+            background: #f44336;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .clear:hover {
+            background: #da190b;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Kalkulačka</h1>
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            <div class="buttons">
+                <button class="clear" onclick="clearDisplay()">C</button>
+                <button class="operator" onclick="appendOperator('/')">/</button>
+                <button class="operator" onclick="appendOperator('*')">×</button>
+                
+                <button class="number" onclick="appendNumber('7')">7</button>
+                <button class="number" onclick="appendNumber('8')">8</button>
+                <button class="number" onclick="appendNumber('9')">9</button>
+                <button class="operator" onclick="appendOperator('-')">-</button>
+                
+                <button class="number" onclick="appendNumber('4')">4</button>
+                <button class="number" onclick="appendNumber('5')">5</button>
+                <button class="number" onclick="appendNumber('6')">6</button>
+                <button class="operator" onclick="appendOperator('+')">+</button>
+                
+                <button class="number" onclick="appendNumber('1')">1</button>
+                <button class="number" onclick="appendNumber('2')">2</button>
+                <button class="number" onclick="appendNumber('3')">3</button>
+                <button class="operator" onclick="toggleSign()">±</button>
+                
+                <button class="number" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+                <button class="number" onclick="appendNumber('.')">.</button>
+                <button class="equals" onclick="calculate()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { sdk } from '@farcaster/miniapp-sdk';
+
+        let display = document.getElementById('display');
+        let currentValue = '0';
+        let previousValue = '';
+        let operator = null;
+        let shouldResetDisplay = false;
+
+        window.appendNumber = function(num) {
+            if (shouldResetDisplay) {
+                currentValue = num;
+                shouldResetDisplay = false;
+            } else {
+                if (currentValue === '0' && num !== '.') {
+                    currentValue = num;
+                } else if (num === '.' && currentValue.includes('.')) {
+                    return;
+                } else {
+                    currentValue += num;
+                }
+            }
+            updateDisplay();
+        };
+
+        window.appendOperator = function(op) {
+            if (operator !== null && !shouldResetDisplay) {
+                calculate();
+            }
+            previousValue = currentValue;
+            operator = op;
+            shouldResetDisplay = true;
+        };
+
+        window.calculate = function() {
+            if (operator === null || shouldResetDisplay) return;
+            
+            let result;
+            const prev = parseFloat(previousValue);
+            const current = parseFloat(currentValue);
+
+            switch(operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = current !== 0 ? prev / current : 0;
+                    break;
+                default:
+                    return;
+            }
+
+            currentValue = result.toString();
+            operator = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+        };
+
+        window.clearDisplay = function() {
+            currentValue = '0';
+            previousValue = '';
+            operator = null;
+            shouldResetDisplay = false;
+            updateDisplay();
+        };
+
+        window.toggleSign = function() {
+            currentValue = (parseFloat(currentValue) * -1).toString();
+            updateDisplay();
+        };
+
+        function updateDisplay() {
+            display.textContent = currentValue;
+        }
+
+        // Inicializuj SDK
+        window.addEventListener('load', async () => {
+            try {
+                await sdk.actions.ready();
+                console.log('Kalkulačka je pripravená!');
+            } catch (error) {
+                console.error('Chyba:', error);
+            }
+        });
+    </script>
+</body>
+</html>

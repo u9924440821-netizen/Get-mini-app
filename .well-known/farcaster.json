@@ -6,17 +6,17 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Get-mini-app",
+    "name": "Calculator",
     "homeUrl": "https://get-mini-app.vercel.app",
     "iconUrl": "https://get-mini-app.vercel.app",
     "splashImageUrl": "https://get-mini-app.vercel.app",
     "splashBackgroundColor": "#667eea",
-    "subtitle": "Moja prvá mini aplikácia",
-    "description": "Jednoduchá mini app na Base",
-    "primaryCategory": "games",
-    "tags": ["example", "miniapp"],
-    "ogTitle": "Moja Mini App",
-    "ogDescription": "Skúšaj moju mini aplikáciu",
+    "subtitle": "Fast calculator",
+    "description": "Mini app calculator on Base",
+    "primaryCategory": "utilities",
+    "tags": ["calculator", "miniapp"],
+    "ogTitle": "Calculator",
+    "ogDescription": "Use our calculator on Base",
     "noindex": true
   }
 }
